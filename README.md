@@ -1,5 +1,3 @@
 # Data_Course_FRISBY
 This README file contains information about my uploaded assignments
-
-hello i am trying to figure out if i can cod things into my files from my terminal by chaning these quotations
-hello i am trying to figure out if i can cod things into my files from my terminal by chaning these quotations
+oh ok so all i have to do is replace the quotations in your assignment with whatever text I want. Cool!
