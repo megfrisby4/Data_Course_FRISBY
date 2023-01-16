@@ -5,3 +5,4 @@ cool new file
 i am going to try to commit a bunch of files to this repository hopefully i didnt mess anything up
 if this works I will be happy because I thought I dog gone messed up there
 This README file contains information about my uploaded assignments
+ok I think I got it figured out phew!
