@@ -24,3 +24,4 @@ ok so 6th commit here we go from the terminal and this time Im tring to space fr
 
 bad to the bone
 b-b-b-b-baaad
+pondering my existence
