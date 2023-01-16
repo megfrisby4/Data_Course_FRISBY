@@ -22,7 +22,5 @@ ima try spacing these suckers out as my 5th commit!
 
 ok so 6th commit here we go from the terminal and this time Im tring to space from the terminal end
 
-bad to the bonegit push
-bad the boneadd README.md
 bad to the bone
 b-b-b-b-baaad
