@@ -28,3 +28,5 @@ pondering my existence
 
 we dont talk about bruno-no-no
 wow whyd that last message go so wonky??
+
+adding another line thismorning to see if I can remember how to do this
