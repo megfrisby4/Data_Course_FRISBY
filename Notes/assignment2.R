@@ -22,15 +22,11 @@ list.files(path = "Data", recursive = TRUE, pattern = "^b")
 
 #9.
 b <- list.files(path = "Data", recursive = TRUE, pattern = "^b", full.names = TRUE)
-b
-readLines(b[1], n=1)
-readLines(b[2], n=1)
-readLines(b[3], n=1)
-
-# for loops --- HW
-#redo this task using for-loop
-for(i in b){print (readLines(i,1))} # how do i get to here?
-for (variable in vector) {
+for (first in b) {print(readLines(first,n=1))
   
 }
+  
+#10. 
+csv_files <- list.files(path = "Data", pattern = ".csv", full.names = TRUE)
+for (line1 in csv_files) {print(readLines(line1, n=1))}
 

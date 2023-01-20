@@ -1,5 +1,4 @@
 #4 
-getwd()
 csv_files <- list.files(path = "Data", pattern = ".csv")
 
 #5
@@ -25,6 +24,9 @@ for (first in b) {print(x = readLines(first,n=1))}
 csv_files <- list.files(path = "Data", pattern = ".csv", full.names = TRUE)
 for (line1 in csv_files) {print(readLines(line1, n=1))}
 
-for(i in b){print (readLines(i,1))} 
+
+for (first in b) {print(x = readLines(first,n=1))}
 
 
+
+for(i in b){print (readLines(i,1))}
