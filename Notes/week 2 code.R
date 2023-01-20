@@ -31,3 +31,11 @@ plot (w,m)
 plot (x=wingspan$wingspan, y=wingspan$mass)
 cor (x=wingspan$wingspan, y=wingspan$mass)
 plot (cor (x=wingspan$wingspan, y=wingspan$mass))
+
+csvs <- list.files(recursive = TRUE, pattern = ".csv")
+getwd()
+
+airlines <- csvs [1]
+readLines(airlines, n=3)
+airlines <- read.csv(airlines)
+csvs

@@ -38,3 +38,67 @@
 
 # to get correlation of data set : cor (x=wingspan$wingspan, y=wingspan$mass)
 
+#New syntax 
+#1st item in vector [square brackets, 1-whatever number it goes to]
+#csvs [1]
+#save it as a variable , airlines <- csvs [1], read n lines in a file = readLines(airlines, n=3)
+
+
+#list.files() --- list the files in the directory you are working in
+# getwd() = --- get working directory --- the absolute file path to the place you currently are 
+# read.csv(airlines) -- read to data frame, make sure to save it as data frame =  airlines <- read.csv(airlines) --- just overrode file path variable
+# recursively listing files ---- list files in all subdirectories ever 
+
+
+#square bracket notation lets you pick elements from an object (upper right in environment
+airlines <- csvs[1] #character vector... 1st element
+readLines(csvs[1])# readlines ets you read in 1 line at a time
+#it makes a character vector where each line is an element
+
+airlines <- read.csv(airlines) # makes a data frame of the comma separated values
+#pays attention to columns to split lines into columns
+
+#numeric vectors
+x <- 1:10  #x = numeric vector of length 10
+length(x)
+#length counts lenght of vector
+#everything in R is vectorized
+#all its mathmetical behavior is vectorized
+y <- 2:11
+x/y
+x+y # matches up vectors and gives you the answers of the vectors together (as shown in top right corner)
+letters
+LETTERS
+paste0(letters, LETTERS)# past together letter (character) vectors 
+
+#expressions (logical)
+x>3 #can use R to ask yes/no questions about vectors 
+(x>3) # tells you what type of vector you have 
+TRUE
+FALSE
+TRUE+FALSE
+TRUE+TRUE
+#TRUE = 1 FALSE = 0
+(x>3) # will get true or false
+sum(x>3) #total number of characters in vector greater than 3 
+x>=3 # x is greater than or equal to three
+x<= 5 # less than or equal to
+x==5 # is equal to? is x equal to?
+
+
+wingspan <- list.files(recursive = TRUE, pattern = "mass.csv", full.names = TRUE)
+wingspan
+wingspan <- read.csv(wingspan)
+names(wingspan) #show names of columns
+names(x) #no names in this vector
+
+sum(wingspan$mass >=70)# how many in mass column have mass greater than or equal to 70
+wingspan$giant <- wingspan$mass >=70 # create brand new column that gives true false vector or whether the mass is >=70
+plot(x=wingspan$wingspan, y=wingspan$mass, col=wingspan$giant)
+names(wingspan)
+
+
+
+
+
+#doing assignment 2 
