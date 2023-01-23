@@ -21,7 +21,9 @@ head(x=df, n=5) #inspects the first 5 lines of the data set
 list.files(path = "Data", recursive = TRUE, pattern = "^b")
 
 # ^ $ (beggining = ^) (ending = $) ---- in regular expressions
-#^/# = begins with/ending
+#^/$= begins with/ending
+
+
 
 #9.
 b <- list.files(path = "Data", recursive = TRUE, pattern = "^b", full.names = TRUE)
@@ -44,4 +46,5 @@ for (line1 in csv_files) {print(readLines(line1, n=1))}
 
 #same dealio here, I needed to allow full names to get the full file path, create a variable, for each item in my vector
 #I want the command to print the first line of every file, so  I put readlines, my variable, and then the number of lines.
-
+    
+        
