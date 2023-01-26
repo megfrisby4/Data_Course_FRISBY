@@ -81,6 +81,7 @@ mtcars[mtcars$mpg>21,] #show what rows has mpg >21
 #rows = where the column mpg has an output greater than 21, all the columns
 mtcars$name <- row.names(mtcars) # adds new column where it is row names
 dim(mtcars)
+getwd()
 mtcars[33,]
 
 
@@ -89,6 +90,7 @@ for (yourmom in 1:10) {print(yourmom+5)
   
 }
 for (yourdad in letters) {print(paste("your dad = ", yourdad))
+
   
 }
 
@@ -99,6 +101,8 @@ myfiles <- list.files(path="Data", pattern=".csv", full.names = TRUE)
 for (i in myfiles) {print(readLines(i,n=3))
   
 }
+q()
 for (i in myfiles) {print(read.csv(i))
   
 }# reads all csvs in as data frames
+getwd()
