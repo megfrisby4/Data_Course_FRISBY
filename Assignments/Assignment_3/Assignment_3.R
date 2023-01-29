@@ -43,8 +43,8 @@ vector1 <= 5
 vector1 == 7
 letters == "a"
 letters != "c"
-letters %in% c("a","b","c","z")
-vector1 %in% 1:6
+letters %in% c("a","b","c","z") #are the letters in the vector a, b, c or Z?
+vector1 %in% 1:6 #is it one through 6 TRUE or FALSE
 
 
 # Data Frames ####
@@ -91,8 +91,8 @@ plot(x=dat$Species, y=dat$Sepal.Length)
 # Object "Classes" ####
 
 #check the classes of these vectors
-class(dat$Petal.Length)
-class(dat$Species)
+class(dat$Petal.Length) #numeric
+class(dat$Species) #factor
 
 # plot() function behaves differently depending on classes of objects given to it!
 
@@ -125,7 +125,8 @@ as.numeric(vector3)
 plot(nums) 
 plot(nums_factor)
 # take note of how numeric vectors and factors behave differently in plot()
-
+#vector = dot plot
+#factor = bar chart
 
 
 
@@ -154,25 +155,39 @@ dbinom(50,100,.5) # probability of getting exactly 50 heads out of 100 coin flip
 # YOUR REMAINING HOMEWORK ASSIGNMENT (Fill in with code) ####
 
 # 1.  Get a subset of the "iris" data frame where it's just even-numbered rows
-
 seq(2,150,2) # here's the code to get a list of the even numbers between 2 and 150
+dim(iris)
+iris[(seq(2,150,2)),]
+
 
 
 
 # 2.  Create a new object called iris_chr which is a copy of iris, except where every column is a character class
+iris_chr <- iris
+iris_chr$Sepal.Length <- as.character(iris$Sepal.Length)
+iris_chr$Sepal.Width <- as.character(iris$Sepal.Width)
+iris_chr$Petal.Length <-  as.character(iris$Petal.Length)
+iris_chr$Petal.Width <- as.character(iris$Petal.Width)
+iris_chr$Species <- as.character(iris$Species)
+iris_chr <- iris_chr[] 
+str(iris_chr)
 
-
+                    
 
 # 3.  Create a new numeric vector object named "Sepal.Area" which is the product of Sepal.Length and Sepal.Width
-
+Sepal.Area <- iris$Sepal.Length*iris$Sepal.Width
+Sepal.Area
 
 
 # 4.  Add Sepal.Area to the iris data frame as a new column
-
+iris$Sepal.Area <- Sepal.Area
+iris
 
 
 # 5.  Create a new dataframe that is a subset of iris using only rows where Sepal.Area is greater than 20 
       # (name it big_area_iris)
+big_area_iris <- iris[iris$Sepal.Area>20, ]
+big_area_iris
 
 
 
