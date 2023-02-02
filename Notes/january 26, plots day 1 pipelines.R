@@ -35,7 +35,7 @@ df %>% ggplot(aes(x=length,y=width))+
 #3 
 
 iris
-names(iris)
+names(iris)print
 iris %>% names()
 iris$Species %>% unique
 
