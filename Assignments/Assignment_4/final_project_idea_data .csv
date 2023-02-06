@@ -1,0 +1,17 @@
+,Year,country,species,death rate,situation,deaths,cases,geographical location (start),spread (km)
+1,August-November 1976,Democratic Republic Of the Congo,Zaire ebolavirus,88%,First recognition of the disease,280,318,"0.5694° N, 18.8076° E",70
+2,June-November 1976,Sudan,Sudan ebolavirus,53%,"Cotton factory contamination, spread through personal contact in hospitals",151,284,"4.647°N, 28.258°E",1200
+3,November 1976,United Kingdom,Zaire ebolavirus,0%,accidental inoculatioin from contaminated needle,0,1,"51.1241° N, 1.7152° W",0
+4,June 1977,Democratic Republic Of the Congo,Zaire ebolavirus,100%,9 year old girl unexpectedly dies,1,1,"20.2530° N, 85.4621° E",0
+5,July - October 1979,Sudan,Sudan ebolavirus,65%,Outbreak occured in same areas as first outbreak,22,34,"4.6340° N, 28.2644° E",25
+6,October 1989,Phillipines,Reston ebolavirus ,0%,"Macaque monkeys infected, Reston ebolavirus does not cause sickness in humans",0,3,Unknown,NA
+7,October 1989,United States ,Reston ebolavirus ,0%,Macaque monkeys delivered to America from Phillipines,0,4,"38.9586° N, 77.3570° W",0
+8,November 1994,COTE D’IVOIRE,Taï Forest ebolavirus,0%,A scientist got sick with Ebola virus after an autopsy is performed on a wild chimpanzee,0,1,"5.6900° N, 6.9394° W",0
+9,February - December 1994,Gabon,Zaire ebolavirus,61%,Rainforest gold mines affected. ,31,51,"
+0.5633° N, 12.8572° E",378
+10,January - May 1995,Democratic Republic Of the Congo,Zaire ebolavirus,81%,Started with charcoal maker in forest and spread through families and hospitals,254,315,"5.0487° S, 18.7839° E",150
+11,May 1996,Russia,Zaire ebolavirus,100%,Lab scientist dies while working on vaccine development,1,1,"54.9833° N, 82.8964° E",0
+12,October 2000,Uganda,Sudan ebolavirus,53%,Spreading epidemic starting in Gulu,224,425,"2.7724° N, 32.2881° E",595
+13,October 2001 - July 2002,Republic of the Congo,Zaire ebolavirus,75%,Spread over Gabon border,44,59,"0.0587° S, 14.4898° E",148
+14,October 2001 - July 2002,Gabon,Zaire ebolavirus,81%,Spread over Gabon border,53,65,"1.0267° N, 14.1001° E",308
+15,November-December 2003,Republic of the Congo,Zaire ebolavirus,83%,Meetings held by women caretakers spread the virus,29,35,"0.4287° N, 14.6967° E",NA
