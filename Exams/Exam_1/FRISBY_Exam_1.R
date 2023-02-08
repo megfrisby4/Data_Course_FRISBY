@@ -68,4 +68,4 @@ cum_deaths_us %>% ggplot(aes(x=Last_Update, y=cumulative_deaths))+
   geom_smooth(stat = 'identity')+labs(x="Date (Year-Month)", y= "Cumulative Deaths in USA")
 #cleaned up the axis titles just to make it really nice!
 #added stat as identity because the data didn't seem to be fitting right
-#seemed to work!
+#seemed to work!!
