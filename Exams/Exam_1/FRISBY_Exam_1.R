@@ -1,6 +1,6 @@
 library(tidyverse)
 #task 1
-#reading the cleaned covid data csv into a data frame
+#reading the cleaned covid data csv into an R data frame
 read.csv("./cleaned_covid_data.csv")
 #making it a data frame (saving it as a data frame named df)
 df <- read.csv("./cleaned_covid_data.csv")
@@ -62,11 +62,10 @@ df$Last_Update <- as.Date(df$Last_Update)
 #I like that I can list it in sequential order which is very handy!!
 cum_deaths_us <- df %>% group_by(Last_Update) %>%
   summarize(cumulative_deaths = cumsum(Deaths)) %>% arrange(Last_Update)
-#make a new data fram that is cum_sums_us which is the cumulative sum of deaths in the 
+#make a new data frame that is cum_sums_us which is the cumulative sum of deaths in the 
 #us over time. 
 cum_deaths_us %>% ggplot(aes(x=Last_Update, y=cumulative_deaths))+
   geom_smooth(stat = 'identity')+labs(x="Date (Year-Month)", y= "Cumulative Deaths in USA")
 #cleaned up the axis titles just to make it really nice!
 #added stat as identity because the data didn't seem to be fitting right
 #seemed to work!
-
