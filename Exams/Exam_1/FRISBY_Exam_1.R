@@ -14,6 +14,8 @@ A_states <- df[grepl(pattern = "^A", x = df$Province_State),]
 A_states
 #gotta make sure and yup its all there (it appears)
 
+getwd()
+
 #task 3
 A_states$Last_Update <- as.Date(A_states$Last_Update)
 #change from a character vector to a date vector to plot 
@@ -39,6 +41,8 @@ A_states$Last_Update <- as.Date(A_states$Last_Update)
 state_max_fatality_rate
 #checking to see my new data frame
 
+
+
 #task 5
 state_max_fatality_rate$Province_State <- factor(state_max_fatality_rate$Province_State, 
 levels=state_max_fatality_rate$Province_State)
@@ -50,7 +54,8 @@ state_max_fatality_rate %>%  ggplot(aes(x=Province_State, y = Maximum_Fatality_R
 #to identity which is me telling the graph that I will put the y values in manually - we can thank google 
 #for that one!
 
-#exercise 6
+
+#task 6
 library(tidyverse)
 df$Last_Update <- as.Date(df$Last_Update)
 #again making this by date, it apparently works better than a character vector and 
