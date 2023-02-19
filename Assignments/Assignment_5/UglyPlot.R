@@ -28,4 +28,4 @@ theme(axis.text.x = element_text(vjust=1, hjust =-5))+
           labs(y="Bears, Beets, Battlestar Galactica")+
   geom_image(aes(x=6, y=200, image="./media/mike.png"),size = .2)
 ggsave(filename = "./media/uglyplot.png", width=6, height = 5)
-getwd()
+
