@@ -1,7 +1,6 @@
 library(tidyverse)
 library(ggplot2)
 library(gganimate)
-library(transformr)
 
 
 #loading my data in relative to my new directory!!!
