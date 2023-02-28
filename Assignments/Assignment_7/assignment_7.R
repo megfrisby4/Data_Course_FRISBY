@@ -68,14 +68,12 @@ ggsave("./Assignment_7_generated_figures/county_populations_dec.png")
 #this is folowed by utah county, then davis couty, then weber county, them washington, then cache, and all others a pretty 
 #small in terms of population, I went back in and made the populations a factor and arranged it by descending to we
 #have a clearer picture
-?geom_ribbon
 clean
 #im looking at the data and wondering what the proportion of religious vs non religious people is for each county
 clean %>% 
   pivot_longer(cols=c(religious, non_religious),
                names_to="type",
-                        values_to="prop") %>% 
-  group_by(county) %>% 
+                        values_to="prop") %>% group_by(county) %>% 
    ggplot(aes(x=type, y=prop, group = county)) +
    geom_bar(stat = "identity", aes(fill = type), position = "dodge") + 
    scale_y_continuous(limits = c(0,1)) + 
@@ -102,16 +100,7 @@ ggsave("./Assignment_7_generated_figures/religious_vs_non_by_county.png", width=
 
 
 #how can I plot and see if population of a county correlates with the proportion of any religious group?
-df %>% ggplot(x=pop_2010, y=proportion)
 
-clean %>% 
-  ggplot(aes(x=pop_2010,y=proportion)) + geom_point() + geom_smooth(method="lm") + lims(y=c(0,1)) +
-  facet_wrap(~county,scales = "free") + theme_bw() +
-  theme(panel.grid = element_blank(), strip.background = element_rect(fill="gray"))
-skim(clean)
-  
-cor.test(pop_2010, proportion, method=c("pearson", "kendall", "spearman"))
-cor.test(clean$pop_2010, clean$proportion)
 #Address the questions:
   
  # “Does population of a county correlate with the proportion of any specific religious group in that county?”
