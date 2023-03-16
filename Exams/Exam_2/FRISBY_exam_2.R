@@ -5,7 +5,9 @@ library(readr)
 #task 1 read in unicef data 
 #slightly clean it with clean names
 #save it as object
-df <- read_csv("./unicef-u5mr.csv") %>% clean_names()
+read_csv("./unicef-u5mr.csv")
+df <- read_csv("./unicef-u5mr.csv") %>% janitor::clean_names()
+
 #look at it a bit
 summary(df)
 str(df)
@@ -151,10 +153,7 @@ compare_performance(mod1, mod2,mod3,mod4) %>% plot()
 Ecu <- data.frame(continent= "Americas", year = 2020,
                   country="Ecuador", region = "South America", u5mr=NA)
 predict(mod4, newdata=Ecu)
-#ok that literally did not work to help at all so rebooting!!
-#maybe a linear model is not the best!
 better_ecuador_2020_prediction <- full_join(Ecu, ecuador)
-#thats better
 #well just add predictions now and focus it down to the year 2020
 #also the real value and the difference
 better_ecuador_2020_prediction %>% modelr::add_predictions(model = mod4) %>% 
