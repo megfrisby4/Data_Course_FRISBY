@@ -1,0 +1,28 @@
+1. I would not say that any of the predictions from my model are scientifically meaningless. What I mean by this is none of the predictions calculated are completely impossible, in fact, judging by the plot of predictions along with real data, they actually fall within the bounds of the real data. In, fact, most of the prediction points on the poin plot overlap the real data. The hypothetical predictions, however a a bit more far off, they dont exactly overlap points within the bounds. The main reason none of my predictions aren't scientifically meaningless is because they all are actually possible values of growth rate. There is no negatives that just simply do not make sense and cannot happen. All these predictions are valid and I think thats the sign of an ok model. Also, because I used hypothetical values, within the range of my model, they all make sense because they could happen and my model knows how to deal with them, based on how I built the model. 
+
+
+2. Most of the relationships I identified in my plots are non linear. I think this is because there is lots of factors at play influencing growth rate, it wasn't one thing was directly associated and a linear predictor of the response. One website I found to deal with nonlinear relationships is https://rpubs.com/abbyhudak/nonlinreg, it gives three ways to model and comprehend nonlinear regressions in R. 
+
+
+3. #writing data for the non linear relationships 
+ non <-  read_csv("./Assignment_8_data/non_linear_relationship.csv")
+non  
+ggplot(non, aes(x=predictor, y=response))+geom_point()
+#have a look at the relationship
+
+library(growthrates)
+#use a calculus function to make model
+f <- function(predictor,a,b) {a * exp(b * predictor)}
+#define parameters 
+fm0 <- nls(log(response) ~ log(f(predictor, a, b)), non, start = c(a = 1, b = 1))
+#make the model with nls using functions (thanks to the internet)
+nonlinmod <- nls(response ~ f(predictor, a, b), non, start = coef(fm0))
+nonlinmod
+#above is the model
+predict(nonlinmod, newdata=non)
+#predict values using new mod
+#this is what the grap of predictions would look like (pink)
+#vs real data
+nonlinpred <- add_predictions(data=non, model=nonlinmod, type="nls")
+ggplot(nonlinpred, aes(x=predictor, y=response))+geom_point()+
+  geom_smooth(aes(y=pred), color='pink')

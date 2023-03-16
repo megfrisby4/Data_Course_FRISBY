@@ -1,12 +1,4 @@
-#Make a new Rproj and Rscript in your personal Assignment_8 directory and work from there.
-#Write a script that:
- # loads the “/Data/mushroom_growth.csv” data set
-#creates several plots exploring relationships between the response and predictors
-#defines at least 4 models that explain the dependent variable “GrowthRate”
-#calculates the mean sq. error of each model
-#selects the best model you tried
-#adds predictions based on new hypothetical values for the independent variables used in your model
-#plots these predictions alongside the real data
+
 
 library(readr)
 library(tidyverse)
@@ -124,11 +116,10 @@ compare_performance(mod1,mod2,mod3,mod4,mod5,mod6,mod7,mod8,mod9) %>% plot()
 #plots these predictions alongside the real data
 
 #add predictions and see if they are close to acutality
-shroom <- df %>% 
+df <- df %>% 
   add_predictions(mod9)
-shroom %>% dplyr::select("GrowthRate", "pred")
+df %>% dplyr::select("GrowthRate", "pred")
 
-pred
 
 #hypothetical values that R will predict from 
 newdf <- data.frame(Nitrogen=c(7,18,23,33,41), Species=c("P.ostreotus", "P.ostreotus", 
@@ -144,20 +135,51 @@ pred=predict(mod9,newdata=newdf)
 hyp_pred <- newdf %>% mutate(pred=pred)
 
 #add new column showing whether a data point is real or hypothetical
-shroom$PredictionType <- "Real"
+df$PredictionType <- "Real"
 hyp_pred$PredictionType="Hypothetical"
 
 #join real and hypothetical data with predicitons
-fullpreds <- full_join(shroom,hyp_pred)
+fullpreds <- full_join(df,hyp_pred)
 
 #plot on original graph
-ggplot(fullpreds, aes(x=Nitrogen, y=pred, color=PredictionType))+
+ fullpreds %>% ggplot(aes(x=Nitrogen, y=pred, color=PredictionType))+
   geom_smooth(se=FALSE)+ geom_point(alpha=.5)+
-  geom_smooth(aes(y=GrowthRate), color="black", se=FALSE)
-  theme_minimal()+ labs(y="GrowthRate")
+  geom_smooth(aes(y=GrowthRate), color="black", se=FALSE)+
+   geom_jitter(color='black', alpha=.5,aes(x=Nitrogen, y=GrowthRate))+
+  theme_minimal()+ labs(y="GrowthRate", subtitle = "black represents real data")
+  ggsave("./Assignment_8_figures/predictions_and_real.png", width=6, height=4.5)
+  
   
 #I know this isn't GREAT but I could not get the residuals to work amazingly, so its ok
 #I tried, Im not sure what to do to make this model better, maybe I am just not plotting it correctly?
   #it represents it just not GREAT but thats a model I guess, it represents the smooth trendline GREAT!!!
 #thre predictions are ok but I would not trust them!!
   #but hey, I did the task I guess. I just sucked it up a little!
+
+  
+#writing data for the non linear relationships 
+ non <-  read_csv("./Assignment_8_data/non_linear_relationship.csv")
+non  
+ggplot(non, aes(x=predictor, y=response))+geom_point()
+#have a look at the relationship
+
+library(growthrates)
+#use a calculus function to make model
+f <- function(predictor,a,b) {a * exp(b * predictor)}
+#define parameters 
+fm0 <- nls(log(response) ~ log(f(predictor, a, b)), non, start = c(a = 1, b = 1))
+#make the model with nls using functions (thanks to the internet)
+nonlinmod <- nls(response ~ f(predictor, a, b), non, start = coef(fm0))
+nonlinmod
+#above is the model
+predict(nonlinmod, newdata=non)
+#predict values using new mod
+#this is what the grap of predictions would look like (pink)
+#vs real data
+nonlinpred <- add_predictions(data=non, model=nonlinmod, type="nls")
+ggplot(nonlinpred, aes(x=predictor, y=response))+geom_point()+
+  geom_smooth(aes(y=pred), color='pink')
+
+ 
+
+
