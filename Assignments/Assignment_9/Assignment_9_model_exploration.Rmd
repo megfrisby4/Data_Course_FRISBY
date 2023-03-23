@@ -1,0 +1,352 @@
+---
+title: "Assignment 9 Model Exploration and Interpretation"
+output: html_document
+date: "2023-03-22"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(error=FALSE, warning=FALSE)
+library(tidyverse)
+library(readr)
+library(easystats)
+library(patchwork)
+library(GGally)
+library(modelr)
+
+
+
+```
+
+I am adressing a data set on grad school admissions from the file *GradSchool_Admissions.csv*
+
+The **packages** I used in R:
+
+```{r packages, message=FALSE}
+library(tidyverse)
+library(readr)
+library(easystats)
+library(patchwork)
+library(GGally)
+library(modelr)
+```
+
+
+**Initial Data Examination and Transformation**
+
+creating a new data frame **df** from *GradSchool_Admissions.csv*
+
+````{r readdf, message=FALSE, echo=TRUE}
+df <- read_csv("./Assignment_9_Data/GradSchool_Admissions.csv")
+```
+
+examine the new data a bit
+```{r examine, message=TRUE, echo=TRUE}
+glimpse(df)
+summary(df)
+
+
+```
+heres the data in table form 
+```{r}
+df %>% kableExtra::kable() %>% kableExtra::kable_classic(lightable_options = 'hover') %>% 
+  kableExtra::scroll_box(width="500px", height = "200px")
+```
+
+
+Looks like the 'admit' column contains values 0 and 1, when this is logical data, I should change this into a TRUE~FALSE vector with 1= TRUE and 0 = FALSE for admittance to grad school 
+
+I'm also going to make rank a factor with levels 1-4 seeing as these rankings are discreet with only 4 possible options.  
+```{r, logical, message=FALSE}
+df <- df %>% mutate(admit=as.logical(admit), rank=as.factor(rank))
+```
+
+That should be much better, let's check, heres a glimpse and a table of the better data
+```{r, glimpselogical, message=TRUE, echo=TRUE}
+glimpse(df)
+df %>% kableExtra::kable() %>% kableExtra::kable_classic(lightable_options = 'hover') %>% 
+  kableExtra::scroll_box(width="500px", height = "200px")
+
+```
+
+I want to predict admittance base on other variables in the data, let's have a look at what these variables are 
+```{r}
+df %>% select(-admit) %>% names()
+```
+
+gre represents an admissons test score
+
+gpa is grade point average
+
+rank is what rank the college is 1 being the 'best'
+
+**Variable Relationships**
+
+Next lets see how the variables relate to one another
+```{r, message=FALSE, comment=FALSE}
+df %>% select(admit, gpa, gre, rank) %>% ggpairs()
+```
+
+
+It looks like all 3 variables are going to have an impact on admittance, however it looks like some of the variables might be associated with one another, I will explore this more when modeling. 
+
+
+Let's see how gre, gpa, and rank relate to admittance 
+
+
+first we'll look at the relationship between gpa and admittance
+
+```{r}
+df %>% ggplot(aes(x=gpa, fill=admit)) + geom_density(alpha=.5)+theme_minimal()
+
+```
+
+looks like the peak for getting admitted was at a 3.5 gpa and the peak for not getting admitted was below that. 
+
+it looks like above a 3.5 gpa the density of admittance was greater than non - admittance
+
+
+next we'll look at the relationship between gre score and admittance
+```{r}
+df %>% ggplot(aes(x=gre, fill=admit)) + geom_density(alpha=.5)+theme_minimal()
+```
+
+
+the peak for being admitted is just above 600 while the peak of non admittance is below that. 
+
+
+then we'll examine the relationship between rank and admittance
+
+```{r}
+df %>% mutate(rank=as.factor(rank)) %>% ggplot(aes(x=rank, fill=admit))+
+  geom_density(alpha=.5)+theme_minimal()
+```
+
+
+very similar but the only rank where a greater density was admitted vs non admitted was rank 4, all the others non admittance had a greater density of the respective population. 
+
+this probably means a lot more people were nont admitted overall and expecially for each of these ranks below 1
+
+
+it also might be valuable to explore relationships between the variables (gre, gpa, and rank) themselves
+
+gre and rank 
+
+```{r}
+df %>% ggplot(aes(x=rank, y=gre, group=rank, color=rank))+geom_boxplot()+theme_minimal()
+```
+
+rank doesn't appear to impact gre score too much
+
+gpa and rank 
+
+```{r}
+df %>% ggplot(aes(x=rank, y=gpa, group=rank, color=rank))+geom_boxplot()+theme_minimal()
+```
+
+same story with gpa, rank doesn't seem to be highly associated
+
+gpa and gre 
+
+```{r}
+df %>% ggplot(aes(x=gre, y=gpa))+geom_point(alpha=.5, color="pink")+geom_smooth(se=FALSE, method='glm', color="red")+theme_minimal()
+```
+
+as you can see here as gre score goes up so does gpa, however there is still a lot of discrepancy 
+
+
+**on to modeling**
+
+I defined several models ranging in complexity to try to describe the relationship and predict an outcome (admit) based on predictors (gpa, gre, rank) and the relationships between them. 
+
+```{r}
+mod <- glm(data=df, formula = admit~gre + gpa + rank, family = binomial)
+mod2 <- glm(data=df, formula = admit~rank*gre*gpa, family=binomial)
+
+```
+
+mod2 wast the most complex it can get, I want to see if I can use step AIC from the MASS package to find a better equation to represent the relationship between all variables 
+
+heres what it will puke out:
+
+```{r}
+step <- MASS::stepAIC(mod2, trace=0)
+step$formula
+```
+
+plug that into a new model 
+
+```{r}
+mod3 <- glm(data=df, formula= step$formula, family=binomial)
+```
+
+continue with modeling
+
+```{r}
+mod4 <- glm(data=df, formula = admit~gre*gpa + rank, family=binomial)
+mod5 <- glm(data=df, formula=admit~rank, family=binomial)
+mod6 <- glm(data=df, formula=admit~gpa*gre*rank+rank+gpa+gre, family=binomial)
+mod7 <- glm(data=df, formula=admit~gpa+rank, family=binomial)
+mod8 <- glm(data=df, formula = admit~gre+gpa*rank, family=binomial)
+
+```
+
+Now that all my models are made I want to find out which one is the best 
+
+```{r}
+compare <- compare_performance(mod,mod2,mod3,mod4,mod5,mod6,mod7,mod8,rank=TRUE)
+compare
+```
+
+this gives me a score (%)
+
+
+I can also compare the performance visually 
+
+
+```{r}
+compare_performance(mod,mod2,mod3,mod4,mod5,mod6,mod7,mod8) %>% plot() 
+```
+
+based on these model 3 and 4 are tied for the best
+
+mod4 is probably the simplest so I will choose that one 
+
+
+lets check the model real quick
+
+```{r}
+check_model(mod4)
+```
+its not PERFECT but its pretty good. 
+
+to further test out this data set, I want to see how it will perform when it gets new information
+
+to do this I wll randomy split the data into a training and testing set 
+
+first I will pick random samples to be the data that the model is tested on 
+
+```{r}
+set.seed(162)
+test<- sample(1:nrow(df),size=round(nrow(df)*.2))
+test
+
+```
+
+then I will use this to subset the original data frame to the training and testing set 
+
+```{r}
+testing <- df[test,]
+trained <- df[-test,]
+```
+
+next I will use this to define a new model 
+
+```{r}
+newmod4 <- glm(data=trained, formula=mod4$formula, family = binomial)
+summary(newmod4)
+check_model(newmod4)
+```
+
+I will compare the performance of the new model to the old model 
+
+```{r}
+compare_performance(newmod4,mod4, rank=TRUE)
+compare_performance(newmod4,mod4) %>% plot()
+```
+
+newmod4 actually appears to be a little 'better'
+
+
+lets add predictions to the new model based on the testing data
+
+```{r}
+trained_pred <- add_predictions(testing, newmod4, type='response')
+trained_pred
+```
+not too bad, and avoiding overfitting too!
+
+lets look at the rmse for both a good prediction of how well the model can predict the testing data
+
+heres for the new model thats been trained (newmod4)
+
+```{r}
+add_residuals(data=testing,newmod4) %>% pluck("resid") %>% .^2 %>% mean(na.rm=TRUE) %>% sqrt()
+```
+
+and here's for our original model using all data (mod4)
+
+```{r}
+add_residuals(data=testing,mod4) %>% pluck("resid") %>% .^2 %>% mean(na.rm=TRUE) %>% sqrt()
+```
+
+the old model has a lower rmse, but not by much. 
+
+The thing is mod4 has seen this data before, so its naturally going to be better at predicting the data its already seen. 
+
+However, newmod4 has a very similar rmse to newmod4 so it's actually a stronger model because it can predict data it hasn't seen before almost as well as the model that has seen this data can. 
+
+
+So, I am going to choose newmod4 to avoid overfitting and because it is a better predictor overall. 
+
+however, I am still going to show what the predicitons  would look like with the old (untrained) model 
+
+
+
+here is how the untrained model predicts from the entire dataset
+
+```{r}
+dfwhole <- df %>% add_predictions(model=mod4, type='response')
+fig1 <- dfwhole %>% ggplot(aes(x=gpa, y=pred, color=rank))+geom_smooth(method='glm')
+fig1
+fig2 <- dfwhole %>% ggplot(aes(x=gre, y=pred, color=rank))+geom_smooth(method='glm')
+fig2
+fig1+fig2
+```
+
+
+and here is how the untrained model (mod4) predicts the testing data 
+
+```{r}
+df_og_test <- testing %>% add_predictions(model=mod4, type='response')
+fig1.1 <-df_og_test %>% ggplot(aes(x=gpa, y=pred, color=rank))+geom_smooth(method='glm')
+fig1.2 <- df_og_test %>% ggplot(aes(x=gre, y=pred, color=rank))+geom_smooth(method='glm')
+fig1.1+fig1.2
+```
+
+
+here is how the trained model (newmod4) predicts the testing data
+
+```{r}
+fig3 <- trained_pred %>% ggplot(aes(x=gre, y=pred, color=rank))+geom_smooth(method='glm')
+fig4 <- trained_pred %>% ggplot(aes(x=gpa, y=pred, color=rank))+geom_smooth(method='glm')
+fig3+fig4
+```
+
+
+and here is how the trained model predicts the entire data set (trained+testing)
+
+```{r}
+df_trained <- df %>% add_predictions(model=newmod4, type='response')
+fig5 <- df_trained %>% ggplot(aes(x=gpa, y=pred, color=rank))+geom_smooth(method='glm')
+fig6 <-  df_trained %>% ggplot(aes(x=gre, y=pred, color=rank))+geom_smooth(method='glm')
+fig5+fig6
+```
+
+
+######conlusions!!!!
+- If you are rank 4 with a gpa higher than 3.5 or a gre higher than 400 you have the least chance of getting into grad schoo compared to peers of the same gpa and gre  
+-If you are from a rank 3 school with a gpa below 3.5 or a gre below 400 or both, you have the least chance of getting into grad school compared to peers with the same gpa and gre
+-overall rank 3  and 4 students with low gpas and gres are the least likely to get into grad school
+-the likeliness of getting into grad school based on gpa and gre scores are very similar for rank 3 and 4 studets which are low overall
+-the students with the most likeliness of getting into grad school are rank 4 students with high gpas
+-likelihood of getting into grad school definetly depends on rank 
+-gre and gpas have about the same effect on getting into grad school for every rank 
+- a student with <3.5 gpa that attends a rank 1 school has about the same likelihood of getting admitted to grad school as a rank 2 student with a 4.0 gpa 
+-a student with a 4.0 gpa in a rank 3 or rank 4 school has about the same probability of getting into college as a rank 1 student with a 2.5 gpa
+-based on these models I would say that rank of the school has the greatest effect on admittance, and then from there gpa and gre within rank. 
+
+
+
+
+
+
