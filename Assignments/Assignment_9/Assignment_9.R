@@ -164,4 +164,4 @@ ggsave("grad_school_predictions.png")
 ###### just a quick note, my computer decided to lose its mind halfway 
 #through generating an html report and a lot of the coding in here died with it....
 #that being said it was my bad not to save, and this will be a lesson to me :( but all the 
-#extra coding I did on here is definetly in the html report!!!
+#extra coding I did on here is definetly in the html report!!
