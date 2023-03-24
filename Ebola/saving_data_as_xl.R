@@ -1,0 +1,6 @@
+library(tidyverse)
+install.packages("openxlsx")
+library(openxlsx)
+library(readr)
+df <- read.csv("./Data/Ebola/redcross.csv")
+openxlsx::write.xlsx(x = df, file="./Data/Ebola/redcross.xlsx")

@@ -97,8 +97,7 @@ p+
 #now that youve got plot add to it
 #use color finder on google for more customized color options!
 
-library(tidyverse
-)
+library(tidyverse)
 library(palmerpenguins)
 #make nifty penguin plot
 p <- penguins[!is.na(penguins$sex),] %>% ggplot(aes(x=species, y=body_mass_g, color = island, fill = species))+

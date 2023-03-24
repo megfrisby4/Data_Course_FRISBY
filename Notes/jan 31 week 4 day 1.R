@@ -67,7 +67,7 @@ penguins[!is.na(penguins$sex),] %>% ggplot(aes(y=body_mass_g, x=island, fill=spe
 
 penguins[!is.na(penguins$sex),]  %>% 
   ggplot(aes(x=flipper_length_mm, y=body_mass_g, color = sex))+
-  geom_point(size=3,alpha=.1)+
+  geom_point(size=3,alpha=.1,)+
   geom_smooth(method="lm", se=FALSE)+
   facet_wrap(~species)+
   theme_void()
