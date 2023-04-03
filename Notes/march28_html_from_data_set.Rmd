@@ -1,0 +1,100 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE)
+library(tidyverse)
+library(easystats)
+library(plotly)
+library(kableExtra)
+library(janitor)
+library(patchwork)
+library(modelr)
+theme_set(theme_minimal())
+```
+
+## Import Data
+```{r, echo=TRUE}
+df <- read_csv2("../media/mee312226-sup-0003-datas1.csv") %>% clean_names()
+df %>% 
+  kable() %>% 
+  kable_classic(lightable_options = 'hover') %>% 
+  scroll_box(height='200px')
+```
+
+## cleaning 
+
+we have to do a few tidying tasks first... 
+
+---
+
+```{r}
+df <- df %>% mutate(femoral_pneumaticity= case_when(femoral_pneumaticity=="yes" ~ TRUE, 
+                                              femoral_pneumaticity == "no"~FALSE), 
+                    body_mass_log10= log10(body_mass_g))
+df[which(df$species %>% duplicated()),]
+df %>% filter(species %in% df[which(df$species %>% duplicated()),]$species) %>% kable() %>% kable_classic()
+
+```
+
+a couple of repeat species are present more than once in this data set with different measurements
+
+```{r}
+femur <- df %>% pivot_longer(starts_with("femur_"), 
+                             names_to = "measurement", 
+                             values_to='mm',
+                             names_prefix = "femur_") %>% 
+  ggplot(aes(x=mm, y=body_mass_g))+geom_point()+geom_smooth()+
+  facet_wrap(~measurement)
+
+humerus <- df %>% pivot_longer(starts_with("humerus_"), 
+                             names_to = "measurement", 
+                             values_to='mm',
+                             names_prefix = "humerus_") %>% 
+  ggplot(aes(x=mm, y=body_mass_g))+geom_point()+geom_smooth()+
+  facet_wrap(~measurement)
+
+tibia <- df %>% pivot_longer(starts_with("tibia_"), 
+                             names_to = "measurement", 
+                             values_to='mm',
+                             names_prefix = "tibia_") %>% 
+  ggplot(aes(x=mm, y=body_mass_g))+geom_point()+geom_smooth()+
+  facet_wrap(~measurement)
+
+tibia/femur/humerus
+```
+
+---
+
+### modeling
+
+log transform results 
+
+here are teh significant terms from our model 
+
+```{r}
+mod1 <- glm(data=df,formula=body_mass_log10~(humerus_length + humerus_circumference + femur_length + femur_circumference + tibia_length + tibia_circumference)*femoral_pneumaticity)
+
+summary(mod1) 
+
+mod1 %>% broom::tidy() %>% dplyr::filter(p.value<=.05) %>% kable() %>% kable_classic(lightable_options = 'hover')
+
+
+```
+
+heres our selected model formula:
+
+```{r}
+formula(mod1)
+```
+
+
+how well does our model predict body mass?
+
+```{r}
+modelr::add_predictions(df,mod1) %>% mutate(pred_g=pred^10, residuals = abs(body_mass_g - pred_g)) %>% ggplot(aes(x=pred_g, y=body_mass_g))+geom_point()+geom_smooth(linetype=2, color='red')
+```
+
+
