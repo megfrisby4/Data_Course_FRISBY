@@ -119,3 +119,6 @@ us_cumulative_deaths %>%
   geom_smooth(stat = 'identity', color = "green", se = F)+
   labs(x="Date", y= "Total Covid Deaths in The USA")+ theme_minimal()
 
+#save as png
+ggsave("./Generated_Figures/cumulative_us_deaths.png", width = 10, height = 8)
+
