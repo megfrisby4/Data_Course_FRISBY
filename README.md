@@ -30,3 +30,5 @@ we dont talk about bruno-no-no
 wow whyd that last message go so wonky??
 
 adding another line thismorning to see if I can remember how to do this
+hello I'm trying to teach myself to navigate the command line again - Dr. Zahn would be so ashamed :(
+struggling through this coding thing
