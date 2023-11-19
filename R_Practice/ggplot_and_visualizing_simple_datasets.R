@@ -93,4 +93,17 @@ ggplot(data=penguins, aes(x=bill_length_mm, y=bill_depth_mm))+geom_point()
 #pay attention to errors, they are very descriptive!
 #fix accordingly
 
+#no apparent relationship
 
+#scatterplot of species vs bill depth 
+gplot(data=penguins, aes(x=species, y=bill_depth_mm))+geom_point()
+#really not that exciting, bill depth varies greatly by species
+#a better choice for geom might be a boxplot
+ggplot(data=penguins, aes(x=species, y=bill_depth_mm))+geom_boxplot(aes(color=species))
+
+#plot of bill flipper length vs bill depth 
+plot_7=ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g,color = bill_depth_mm))+
+  geom_point()+geom_smooth(se = F)
+plot_7
+                                                                           
+       
