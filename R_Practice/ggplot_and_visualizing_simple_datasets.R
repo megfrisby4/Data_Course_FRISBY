@@ -96,14 +96,123 @@ ggplot(data=penguins, aes(x=bill_length_mm, y=bill_depth_mm))+geom_point()
 #no apparent relationship
 
 #scatterplot of species vs bill depth 
-gplot(data=penguins, aes(x=species, y=bill_depth_mm))+geom_point()
+ggplot(data=penguins, aes(x=species, y=bill_depth_mm))+geom_point()
 #really not that exciting, bill depth varies greatly by species
 #a better choice for geom might be a boxplot
-ggplot(data=penguins, aes(x=species, y=bill_depth_mm))+geom_boxplot(aes(color=species))
+ggplot(data=penguins)+geom_boxplot(aes(x=species, y=bill_depth_mm, color=sex), na.rm = T)
 
 #plot of bill flipper length vs bill depth 
 plot_7=ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g,color = bill_depth_mm))+
   geom_point()+geom_smooth(se = F)
 plot_7
-                                                                           
-       
+
+
+
+##Working with categorical variables (bar charts)
+
+
+#visualizing data with categorical variables
+#only takes on one of a small set of values
+#usually quantitative
+#use bar chart
+
+bar_1 <- penguins %>% ggplot(aes(x=species))+geom_bar()
+bar_1
+
+#its often preferred to reorder the bars based on frequencies
+#to do so, reorder as factor
+
+penguins %>% ggplot(aes(x=fct_infreq(species)))+geom_bar()
+#fct_infreq argument factors by appearance... which is wicked!
+
+
+
+
+##numerical variables (histograms, density charts, etc.)
+
+
+#numerical variables (quantitative) can take on a wide range of values
+#sensible to add subtract or take averages of values
+#can be continuous or discrete
+
+###histograms
+
+#histograms often use to visualize continuous variables
+hist_og <- penguins %>% ggplot(aes(x=body_mass_g))+
+  geom_histogram(binwidth=200)
+hist_og
+
+#a histogram divides the x axis equally into bins (you choose the size)
+#and then reports the frequency of value in each bin 
+#very informative!
+
+#make sure to set good binwidths to get a reasonable sense of the distribution
+#for example 
+hist_1 <- penguins %>% ggplot(aes(x=body_mass_g))+
+  geom_histogram(binwidth=20)
+hist_1
+#this histogram sucks ass, literally tells no good info
+
+hist_2 <- penguins %>% ggplot(aes(x=body_mass_g))+
+  geom_histogram(binwidth=2000)
+hist_2
+#this histogram also sucks ass for the same reasons
+
+hist_og
+#this on was nice! 
+
+
+
+
+###density plots
+
+#basically a smoothed out histogram
+#visualize distribution
+density_1 <- penguins %>% ggplot(aes(x=body_mass_g))+geom_density()
+density_1
+
+
+#more practice 
+bar_2<- penguins %>%ggplot(aes(y=species))+geom_bar()
+bar_2
+#fancy horizontal bar chart 
+
+#exploring colors
+penguins %>% ggplot(aes(x=species))+
+  geom_bar(fill="red")
+penguins %>% ggplot(aes(x=species))+
+  geom_bar(color='blue')
+#fill is way more useful!
+#color and fill are not aesthetics by the way!
+#learned that one the hard way!
+
+diamonds <- diamonds
+view(diamonds)
+glimpse(diamonds)
+
+hist_3 <- diamonds %>% ggplot(aes(x=carat))+geom_histogram(fill='green', binwidth = .2)
+hist_3
+#binwidth of around .2 is pretty good 
+
+
+
+#visualizing relationships between 2+ variables
+
+#a numerical and categorical variable
+#use back to back boxplots
+#good at detecting outliers/summarize the data
+
+box_1 <- penguins %>% ggplot(aes(x=species, y=body_mass_g))+geom_boxplot()
+box_1
+#use for categorical vs. numerical variable
+
+#you can also make overlapping density plots
+density_2 <- penguins %>% ggplot(aes(x=body_mass_g, color=species, fill=species))+
+  geom_density(alpha=0.5)
+density_2
+#alpha = transparency 
+
+#map variables to aesthetic if we want visual attribute represented to vary
+#base on values of that variable
+#otherwise set the variable (don't map) -- dont place inside aes()
+
